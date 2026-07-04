@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Robot Sifir Academy</title>
+
+<style>
+body{
+margin:0;
+font-family:Arial;
+background:linear-gradient(180deg,#0f2027,#203a43,#2c5364);
+color:white;
+text-align:center;
+}
+
+.container{
+max-width:500px;
+margin:50px auto;
+padding:20px;
+background:rgba(255,255,255,0.1);
+border-radius:20px;
+}
+
+button{
+padding:12px;
+margin:8px;
+width:90%;
+font-size:18px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+}
+
+.choice{
+background:#00bcd4;
+color:white;
+}
+
+.choice:hover{
+background:#0097a7;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🤖 AI ROBOT SIFIR</h1>
+
+<div id="menu">
+<p>Pilih Sifir:</p>
+<div id="buttons"></div>
+</div>
+
+<div id="game" style="display:none;">
+<h2 id="question"></h2>
+<div id="answers"></div>
+<p id="score">Markah: 0</p>
+</div>
+
+</div>
+
+<script>
+let score = 0;
+let currentA, currentB;
+
+const buttonsDiv = document.getElementById("buttons");
+
+for(let i=2;i<=12;i++){
+let btn = document.createElement("button");
+btn.innerText = "Sifir " + i;
+btn.className = "choice";
+btn.onclick = ()=>startGame(i);
+buttonsDiv.appendChild(btn);
+}
+
+function startGame(table){
+document.getElementById("menu").style.display="none";
+document.getElementById("game").style.display="block";
+nextQuestion(table);
+}
+
+function nextQuestion(table){
+
+currentA = table;
+currentB = Math.floor(Math.random()*12)+1;
+
+let correct = currentA * currentB;
+
+document.getElementById("question").innerText =
+currentA + " × " + currentB + " = ?";
+
+let answers = [correct];
+
+while(answers.length < 4){
+let wrong = Math.floor(Math.random()*144);
+if(!answers.includes(wrong)) answers.push(wrong);
+}
+
+answers.sort(()=>Math.random()-0.5);
+
+let html="";
+answers.forEach(a=>{
+html += `<button class="choice" onclick="check(${a},${correct},${table})">${a}</button>`;
+});
+
+document.getElementById("answers").innerHTML = html;
+}
+
+function check(ans, correct, table){
+if(ans === correct){
+score += 10;
+alert("Betul! 🎉");
+}else{
+alert("Salah ❌");
+}
+document.getElementById("score").innerText = "Markah: " + score;
+nextQuestion(table);
+}
+</script>
+
+</body>
+</html>
